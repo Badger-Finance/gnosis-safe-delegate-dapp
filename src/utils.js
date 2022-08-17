@@ -31,7 +31,8 @@ const NETWORK = {
     },
     "fantom": {
         CHAINID: 250,
-        TX_SERVICE_BASE_URL: "https://safe.fantom.network",
+        TX_SERVICE_BASE_URL: "https://safe-txservice.fantom.network",
+
     },
     "optimism": {
         CHAINID: 10,
