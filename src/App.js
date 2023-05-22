@@ -29,6 +29,7 @@ class App extends Component {
             addLabel: "",
             removeDelegate: "",
             txBaseUrl: "",
+            delegator: "",
         };
 
         this.connectWalletMetamask = this.connectWalletMetamask.bind(this);
@@ -48,7 +49,8 @@ class App extends Component {
             .then(r => {
                 injectedConnector.getAccount().then((account) => {
                     this.setState({connected: true,
-                        txBaseUrl: utils.getTxServiceBaseURL(chainId2Entry[this.props.web3ReactHookValue.chainId])});
+                        txBaseUrl: utils.getTxServiceBaseURL(chainId2Entry[this.props.web3ReactHookValue.chainId]),
+                        delegator: this.props.web3ReactHookValue.account});
                     window.ethereum.on('chainChanged', utils.reloadPage);
                 }).catch((e) => {alert(e); console.error(e)});
             }).catch((e) => {alert(e); console.error(e)});
@@ -66,6 +68,7 @@ class App extends Component {
             addLabel: "",
             removeDelegate: "",
             txBaseUrl: "",
+            delegator: "",
         });
         window.ethereum.removeListener('chainChanged', utils.reloadPage);
     }
@@ -79,7 +82,7 @@ class App extends Component {
 
     async fetchDelegates() {
         const account = this.state.safeAccount;
-        fetch(`${this.state.txBaseUrl}/api/v1/safes/${account}/delegates/`)
+        fetch(`${this.state.txBaseUrl}/api/v1/delegates/?safe=${account}`)
             .then((response) => response.json())
             .then(data => {
                 this.setState({delegates: data.results});
@@ -89,6 +92,7 @@ class App extends Component {
     async addDelegate() {
         const account = this.state.safeAccount;
         const delegate = utils.getChecksumAddress(this.state.addDelegate);
+        const delegator = utils.getChecksumAddress(this.state.delegator);
         const label = this.state.addLabel;
 
         const signature = await this.getSignature(delegate);
@@ -98,11 +102,12 @@ class App extends Component {
             body: JSON.stringify({
                 "safe": account,
                 "delegate": delegate,
+                "delegator": delegator,
                 "signature": signature,
                 "label": label
             })
         };
-        fetch(`${this.state.txBaseUrl}/api/v1/safes/${account}/delegates/`, requestOptions)
+        fetch(`${this.state.txBaseUrl}/api/v1/delegates/`, requestOptions)
             .then(response => response.json())
             .then(data => {
                 this.setState({"addDelegate": "", "addLabel": ""})
@@ -111,18 +116,20 @@ class App extends Component {
     }
 
     async removeDelegate() {
-        const account = this.state.safeAccount;
         const delegate = utils.getChecksumAddress(this.state.removeDelegate);
+        const delegator = utils.getChecksumAddress(this.state.delegator);
 
         const signature = await this.getSignature(delegate);
         const requestOptions = {
             method: 'DELETE',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify({
+                "delegate": delegate,
+                "delegator": delegator,
                 "signature": signature
             })
         };
-        fetch(`${this.state.txBaseUrl}/api/v1/safes/${account}/delegates/${delegate}/`, requestOptions)
+        fetch(`${this.state.txBaseUrl}/api/v1/delegates/${delegate}/`, requestOptions)
             .then(response => {
                 this.setState({"removeDelegate": ""})
                 this.fetchDelegates();
