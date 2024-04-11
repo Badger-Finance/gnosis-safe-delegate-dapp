@@ -1,17 +1,14 @@
 const {getAddress} = require("@ethersproject/address");
 
 const NETWORK = {
+    // Source of truth for urls: https://docs.safe.global/advanced/api-supported-networks
     "mainnet": {
         CHAINID: 1,
         TX_SERVICE_BASE_URL: "https://safe-transaction-mainnet.safe.global",
     },
-    "rinkeby": {
-        CHAINID: 4,
-        TX_SERVICE_BASE_URL: "https://safe-transaction-rinkeby.safe.global",
-    },
-    "goerli": {
-        CHAINID: 5,
-        TX_SERVICE_BASE_URL: "https://safe-transaction-goerli.safe.global",
+    "sepolia": {
+        CHAINID: 11155111,
+        TX_SERVICE_BASE_URL: "https://safe-transaction-sepolia.safe.global",
     },
     "xdai": {
         CHAINID: 100,
@@ -32,11 +29,38 @@ const NETWORK = {
     "fantom": {
         CHAINID: 250,
         TX_SERVICE_BASE_URL: "https://safe-txservice.fantom.network",
-
     },
     "optimism": {
         CHAINID: 10,
         TX_SERVICE_BASE_URL: "https://safe-transaction-optimism.safe.global",
+    },
+    "zksync": {
+        CHAINID: 324,
+        TX_SERVICE_BASE_URL: "https://safe-transaction-zksync.safe.global",
+    },
+    "polygon-zkevm": {
+        CHAINID: 1101,
+        TX_SERVICE_BASE_URL: "https://safe-transaction-zkevm.safe.global",
+    },
+    "base": {
+        CHAINID: 8453,
+        TX_SERVICE_BASE_URL: "https://safe-transaction-base.safe.global",
+    },
+    "celo": {
+        CHAINID: 42220,
+        TX_SERVICE_BASE_URL: "https://safe-transaction-celo.safe.global",
+    },
+    "avalanche": {
+        CHAINID: 43114,
+        TX_SERVICE_BASE_URL: "https://safe-transaction-avalanche.safe.global",
+    },
+    "base-sepolia": {
+        CHAINID: 84532,
+        TX_SERVICE_BASE_URL: "https://safe-transaction-base-sepolia.safe.global",
+    },
+    "aurora": {
+        CHAINID: 1313161554,
+        TX_SERVICE_BASE_URL: "https://safe-transaction-aurora.safe.global",
     }
 }
 
